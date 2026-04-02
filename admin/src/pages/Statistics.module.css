@@ -1,0 +1,13 @@
+.page { padding: 32px; max-width: 800px; }
+.title { font-size: 20px; font-weight: 600; margin-bottom: 32px; }
+.placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 60px 24px;
+  gap: 12px;
+  text-align: center;
+}
+.icon { font-size: 40px; }
+.text { font-size: 15px; color: var(--text-secondary); }
+.subtext { font-size: 13px; color: var(--text-tertiary); }

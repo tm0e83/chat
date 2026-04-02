@@ -1,0 +1,135 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ─────────────────────────────────────────────────────────────
+    // Hilfsfunktionen
+    // ─────────────────────────────────────────────────────────────
+
+    /** Prüft ob der anfragende Nutzer der Super-Admin ist. */
+    function isSuperAdmin() {
+      return request.auth != null
+          && request.auth.token.role == 'superadmin';
+    }
+
+    /**
+     * Prüft ob der anfragende Nutzer Admin des angegebenen Tenants ist.
+     * Tenant-Admins haben Custom Claim: { role: 'admin', tenantId: '...' }
+     */
+    function isTenantAdmin(tenantId) {
+      return request.auth != null
+          && request.auth.token.role == 'admin'
+          && request.auth.token.tenantId == tenantId;
+    }
+
+    /** Super-Admin oder Admin des jeweiligen Tenants. */
+    function isAdminOf(tenantId) {
+      return isSuperAdmin() || isTenantAdmin(tenantId);
+    }
+
+    /**
+     * Prüft ob der anfragende Nutzer Eigentümer einer Konversation ist.
+     * Konversations-ID hat das Format: {tenantId}_{userId}
+     */
+    function isConversationOwner(conversationId) {
+      return request.auth != null
+          && conversationId.matches('^[^_]+_' + request.auth.uid + '$');
+    }
+
+    /**
+     * Prüft ob die Domain im neuen Dokument in der Tenant-Whitelist enthalten ist.
+     * Wird beim Erstellen einer Konversation geprüft, um API-Missbrauch zu verhindern.
+     */
+    function isDomainAllowed(tenantId) {
+      let tenant = get(/databases/$(database)/documents/tenants/$(tenantId)).data;
+      return request.resource.data.domain in tenant.domains
+          || request.resource.data.domain == 'localhost'
+          || request.resource.data.domain == '127.0.0.1';
+    }
+
+    // ─────────────────────────────────────────────────────────────
+    // tenants/{tenantId}
+    // Tenant-Konfiguration: Domains, Branding, Status
+    // ─────────────────────────────────────────────────────────────
+    match /tenants/{tenantId} {
+      // Jeder authentifizierte Nutzer darf seinen eigenen Tenant lesen
+      // (Widget braucht Domains + Branding vor dem Login — daher public read)
+      allow read: if true;
+
+      // Super-Admin darf alles
+      allow create, delete: if isSuperAdmin();
+
+      // Tenant-Admin darf nur domains und branding seines eigenen Tenants ändern
+      allow update: if isSuperAdmin()
+                    || (isTenantAdmin(tenantId)
+                        && request.resource.data.diff(resource.data).affectedKeys()
+                           .hasOnly(['domains', 'branding']));
+    }
+
+    // ─────────────────────────────────────────────────────────────
+    // invites/{inviteId}
+    // Einladungen für neue Tenants und Tenant-Admins
+    // ─────────────────────────────────────────────────────────────
+    match /invites/{inviteId} {
+      // Unauthentifiziertes Lesen erlaubt — damit die Invite-Seite die E-Mail
+      // vorausfüllen kann. Schreibzugriff nur für Super-Admin und Cloud Functions.
+      allow read: if true;
+      allow write: if isSuperAdmin();
+    }
+
+    // ─────────────────────────────────────────────────────────────
+    // conversations/{conversationId}
+    // Format der conversationId: {tenantId}_{userId}
+    // ─────────────────────────────────────────────────────────────
+    match /conversations/{conversationId} {
+
+      // Lesen: Eigentümer der Konversation oder Admin des Tenants
+      allow read: if isConversationOwner(conversationId)
+                  || isAdminOf(resource.data.tenantId);
+
+      // Erstellen: Nur der Nutzer für seine eigene Konversation,
+      // wenn die Domain in der Tenant-Whitelist ist
+      allow create: if request.auth != null
+                    && isConversationOwner(conversationId)
+                    && request.resource.data.userId == request.auth.uid
+                    && isDomainAllowed(request.resource.data.tenantId);
+
+      // Aktualisieren: Admin darf alles, Nutzer darf seine eigene Konversation aktualisieren
+      // (nötig für lastMessage/updatedAt/unreadByAdmin nach dem Senden)
+      allow update: if isAdminOf(resource.data.tenantId)
+                    || isConversationOwner(conversationId);
+
+      // Löschen: Nur Admin (über Cloud Function mit Batch-Delete)
+      allow delete: if isAdminOf(resource.data.tenantId);
+
+      // ───────────────────────────────────────────────────────────
+      // conversations/{conversationId}/messages/{messageId}
+      // Nachrichten sind immutabel — kein clientseitiges Update/Delete
+      // ───────────────────────────────────────────────────────────
+      match /messages/{messageId} {
+        // Lesen: Eigentümer oder Admin
+        allow read: if isConversationOwner(conversationId)
+                    || isAdminOf(get(/databases/$(database)/documents/conversations/$(conversationId)).data.tenantId);
+
+        // Erstellen: Nutzer für seine Konversation, Admin für alle
+        allow create: if request.auth != null
+                      && (
+                        // Nutzer sendet eine Nachricht
+                        (isConversationOwner(conversationId)
+                          && request.resource.data.senderRole == 'user'
+                          && request.resource.data.senderId == request.auth.uid)
+                        ||
+                        // Admin antwortet
+                        isAdminOf(get(/databases/$(database)/documents/conversations/$(conversationId)).data.tenantId)
+                      );
+
+        // Nachrichten sind unveränderlich (Audit-Trail)
+        allow update: if false;
+
+        // Löschen nur über Cloud Function (Admin SDK umgeht Security Rules)
+        allow delete: if false;
+      }
+    }
+  }
+}

@@ -1,0 +1,74 @@
+.page { padding: 32px; max-width: 800px; }
+.title { font-size: 20px; font-weight: 600; margin-bottom: 24px; }
+.hint { color: var(--text-secondary); font-size: 13px; }
+.error { color: var(--danger); font-size: 13px; }
+
+.table { display: flex; flex-direction: column; gap: 2px; }
+
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+  border-radius: var(--radius-sm);
+  gap: 16px;
+  transition: background 0.12s;
+}
+.row:hover { background: var(--bg-secondary); }
+.rowDisabled { opacity: 0.6; }
+
+.userInfo { flex: 1; min-width: 0; }
+.userEmail { font-size: 14px; font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.userMeta { font-size: 12px; color: var(--text-secondary); margin-top: 2px; display: flex; align-items: center; gap: 6px; }
+
+.disabledTag {
+  background: rgba(239, 68, 68, 0.1);
+  color: var(--danger);
+  font-size: 10px;
+  padding: 1px 6px;
+  border-radius: 4px;
+  font-weight: 500;
+}
+
+.actions { display: flex; gap: 6px; flex-shrink: 0; }
+
+.actionBtn {
+  padding: 6px 12px;
+  border-radius: var(--radius-sm);
+  border: none;
+  background: var(--bg-tertiary);
+  color: var(--text-secondary);
+  font-size: 12px;
+  font-family: var(--font);
+  cursor: pointer;
+  transition: background 0.12s, color 0.12s;
+}
+.actionBtn:hover:not(:disabled) { background: var(--bg-secondary); color: var(--text); }
+.actionBtn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.actionBtnDanger:hover:not(:disabled) {
+  background: rgba(239, 68, 68, 0.1);
+  color: var(--danger);
+}
+
+.loadMoreBtn {
+  margin-top: 16px;
+  padding: 8px 20px;
+  border-radius: var(--radius-sm);
+  border: none;
+  background: var(--bg-secondary);
+  color: var(--text-secondary);
+  font-family: var(--font);
+  font-size: 13px;
+  cursor: pointer;
+}
+.loadMoreBtn:hover { background: var(--bg-tertiary); }
+
+/* Dialog */
+.overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); display: flex; align-items: center; justify-content: center; z-index: 100; }
+.dialog { background: var(--bg); border-radius: var(--radius); padding: 24px; max-width: 360px; width: 90%; box-shadow: var(--shadow-md); }
+.dialogText { font-size: 14px; margin-bottom: 20px; line-height: 1.5; }
+.dialogActions { display: flex; gap: 8px; justify-content: flex-end; }
+.btnSecondary { padding: 8px 16px; border-radius: var(--radius-sm); border: none; background: var(--bg-secondary); color: var(--text); font-size: 13px; cursor: pointer; }
+.btnDanger { padding: 8px 16px; border-radius: var(--radius-sm); border: none; background: var(--danger); color: white; font-size: 13px; cursor: pointer; }
+.btnDanger:disabled { opacity: 0.6; cursor: not-allowed; }

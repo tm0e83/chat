@@ -1,0 +1,38 @@
+.page { padding: 32px; max-width: 600px; }
+.header { display: flex; align-items: center; gap: 12px; margin-bottom: 28px; }
+.title { font-size: 20px; font-weight: 600; }
+.statusTag { font-size: 11px; font-weight: 500; padding: 2px 8px; border-radius: 10px; }
+.tagActive { background: rgba(34, 197, 94, 0.1); color: var(--success); }
+.tagSuspended { background: rgba(239, 68, 68, 0.1); color: var(--danger); }
+
+.infoGrid { display: flex; flex-direction: column; gap: 8px; margin-bottom: 32px; }
+.infoRow { display: flex; gap: 16px; padding: 10px 0; }
+.infoLabel { width: 100px; font-size: 12px; color: var(--text-secondary); flex-shrink: 0; padding-top: 1px; }
+.infoValue { font-size: 14px; color: var(--text); word-break: break-all; }
+.mono { font-family: monospace; font-size: 13px; }
+
+.actions { display: flex; gap: 8px; }
+
+.btnSuspend, .btnActivate, .btnDelete {
+  padding: 9px 16px;
+  border-radius: var(--radius-sm);
+  border: none;
+  font-family: var(--font);
+  font-size: 13px;
+  cursor: pointer;
+}
+.btnSuspend { background: rgba(245, 158, 11, 0.1); color: var(--warning); }
+.btnSuspend:hover { background: rgba(245, 158, 11, 0.2); }
+.btnActivate { background: rgba(34, 197, 94, 0.1); color: var(--success); }
+.btnActivate:hover { background: rgba(34, 197, 94, 0.2); }
+.btnDelete { background: transparent; color: var(--danger); }
+.btnDelete:hover { background: rgba(239, 68, 68, 0.08); }
+button:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); display: flex; align-items: center; justify-content: center; z-index: 100; }
+.dialog { background: var(--bg); border-radius: var(--radius); padding: 24px; max-width: 400px; width: 90%; box-shadow: var(--shadow-md); }
+.dialogText { font-size: 14px; line-height: 1.6; margin-bottom: 20px; }
+.dialogActions { display: flex; gap: 8px; justify-content: flex-end; }
+.btnSecondary { padding: 8px 16px; border-radius: var(--radius-sm); border: none; background: var(--bg-secondary); color: var(--text); font-size: 13px; cursor: pointer; }
+.btnDanger { padding: 8px 16px; border-radius: var(--radius-sm); border: none; background: var(--danger); color: white; font-size: 13px; cursor: pointer; }
+.btnDanger:disabled { opacity: 0.6; cursor: not-allowed; }

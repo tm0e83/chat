@@ -1,0 +1,18 @@
+{
+  "projects": {
+    "default": "chat-1e4a5"
+  },
+  "targets": {
+    "chat-1e4a5": {
+      "hosting": {
+        "widget": [
+          "chat-1e4a5"
+        ],
+        "admin": [
+          "trsadmin"
+        ]
+      }
+    }
+  },
+  "etags": {}
+}

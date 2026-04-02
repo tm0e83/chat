@@ -1,0 +1,23 @@
+{
+  "name": "support-chat",
+  "version": "0.1.0",
+  "private": true,
+  "workspaces": [
+    "shared",
+    "widget",
+    "admin",
+    "functions"
+  ],
+  "scripts": {
+    "dev:widget": "npm run dev -w widget",
+    "dev:admin": "npm run dev -w admin",
+    "build": "npm run build -w widget && npm run build -w admin",
+    "build:widget": "npm run build -w widget",
+    "build:admin": "npm run build -w admin",
+    "test": "npm run test -w widget && npm run test -w admin && npm run test -w functions",
+    "test:e2e": "npm run test:e2e -w admin",
+    "deploy": "npm run build && firebase deploy",
+    "deploy:functions": "firebase deploy --only functions",
+    "deploy:rules": "firebase deploy --only firestore:rules,firestore:indexes"
+  }
+}

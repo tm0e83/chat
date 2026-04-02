@@ -1,0 +1,124 @@
+/*
+ * Layout-Styles — Sidebar + Content-Shell.
+ * Kein Border-Dekor, minimalistisch und funktional.
+ */
+
+.shell {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* ─── Sidebar ─────────────────────────────────────────────────────────────── */
+.sidebar {
+  width: var(--sidebar-width);
+  flex-shrink: 0;
+  background: var(--bg-secondary);
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 20px 16px;
+  font-weight: 600;
+  font-size: 15px;
+  color: var(--text);
+}
+
+.logoIcon { font-size: 20px; }
+.logoText { flex: 1; }
+
+/* ─── Navigation ──────────────────────────────────────────────────────────── */
+.nav {
+  flex: 1;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.navItem {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  border-radius: var(--radius-sm);
+  color: var(--text-secondary);
+  font-size: 14px;
+  transition: background 0.12s, color 0.12s;
+  text-decoration: none;
+}
+
+.navItem:hover {
+  background: var(--bg-tertiary);
+  color: var(--text);
+  text-decoration: none;
+}
+
+.navItemActive {
+  background: var(--bg-tertiary);
+  color: var(--primary);
+  font-weight: 500;
+}
+
+.navIcon {
+  font-size: 16px;
+  width: 20px;
+  text-align: center;
+}
+
+.navDivider {
+  height: 1px;
+  background: var(--border);
+  margin: 8px 12px;
+}
+
+/* ─── Nutzer-Bereich (unten in der Sidebar) ───────────────────────────────── */
+.userArea {
+  padding: 16px;
+  border-top: 1px solid var(--border);
+}
+
+.userEmail {
+  font-size: 12px;
+  color: var(--text);
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.userRole {
+  font-size: 11px;
+  color: var(--text-tertiary);
+  margin-top: 2px;
+  margin-bottom: 10px;
+}
+
+.logoutBtn {
+  width: 100%;
+  padding: 6px 12px;
+  border-radius: var(--radius-sm);
+  border: none;
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 12px;
+  text-align: left;
+  transition: background 0.12s, color 0.12s;
+}
+
+.logoutBtn:hover {
+  background: var(--bg-tertiary);
+  color: var(--text);
+}
+
+/* ─── Haupt-Content ───────────────────────────────────────────────────────── */
+.main {
+  flex: 1;
+  overflow-y: auto;
+  background: var(--bg);
+}

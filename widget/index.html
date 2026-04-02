@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Support Chat — Dev-Harness</title>
+  <style>
+    /* Einfache Test-Seite um das Widget in der Entwicklung zu testen */
+    body {
+      font-family: system-ui, sans-serif;
+      margin: 0;
+      padding: 40px;
+      background: #f5f5f5;
+      min-height: 100vh;
+    }
+    h1 { color: #333; }
+    p { color: #666; max-width: 600px; }
+
+    /* Dark-Mode-Test */
+    .dark-bg {
+      background: #1a1a2e;
+      color: white;
+      padding: 40px;
+      margin-top: 40px;
+      border-radius: 8px;
+    }
+
+    /* Inline-Modus Test-Container */
+    #inline-chat-container {
+      width: 400px;
+      height: 600px;
+      margin-top: 40px;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+  </style>
+</head>
+<body>
+  <h1>Support Chat — Entwicklungsumgebung</h1>
+  <p>
+    Diese Seite dient nur zum Testen des Widgets während der Entwicklung.
+    Das Widget läuft im Floating-Modus unten rechts.
+  </p>
+
+  <div class="dark-bg">
+    <h2>Dark Background Test</h2>
+    <p>Das Widget sollte auch auf dunklen Hintergründen gut erkennbar sein.</p>
+  </div>
+
+  <h2>Inline-Modus</h2>
+  <div id="inline-chat-container"></div>
+
+  <!--
+    Widget-Einbindung im Floating-Modus (Standard).
+    data-tenant-id: ID des Tenants aus Firestore
+    Ersetze 'dev-tenant' mit einer echten Tenant-ID aus deiner Firebase-Datenbank.
+  -->
+  <script type="module" src="/src/index.js" data-tenant-id="dev-tenant"></script>
+</body>
+</html>
