@@ -1,6 +1,11 @@
 /*
  * Layout-Styles — Sidebar + Content-Shell.
  * Kein Border-Dekor, minimalistisch und funktional.
+ *
+ * Sidebar-Zustände:
+ *   Standard:          240px, Icons + Labels
+ *   .sidebarCollapsed: 56px, nur Icons (Desktop)
+ *   .sidebarMobileOpen: Overlay von links (Mobile)
  */
 
 .shell {
@@ -16,9 +21,17 @@
   background: var(--bg-secondary);
   display: flex;
   flex-direction: column;
+  overflow: hidden;
   overflow-y: auto;
+  transition: width 0.2s ease;
 }
 
+/* Icon-only-Modus (Desktop) */
+.sidebarCollapsed {
+  width: var(--sidebar-width-collapsed);
+}
+
+/* ─── Logo-Zeile ──────────────────────────────────────────────────────────── */
 .logo {
   display: flex;
   align-items: center;
@@ -27,10 +40,32 @@
   font-weight: 600;
   font-size: 15px;
   color: var(--text);
+  flex-shrink: 0;
 }
 
-.logoIcon { font-size: 20px; }
-.logoText { flex: 1; }
+.sidebarCollapsed .logo {
+  padding: 20px 0;
+  justify-content: center;
+  gap: 0;
+}
+
+.logoIcon { font-size: 20px; flex-shrink: 0; }
+.logoText { flex: 1; overflow: hidden; white-space: nowrap; }
+
+/* Toggle-Button (‹ / ›) — nur Desktop sichtbar */
+.toggleBtn {
+  background: none;
+  border: none;
+  color: var(--text-tertiary);
+  font-size: 18px;
+  line-height: 1;
+  padding: 2px 4px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: color 0.12s, background 0.12s;
+}
+.toggleBtn:hover { color: var(--text); background: var(--bg-tertiary); }
 
 /* ─── Navigation ──────────────────────────────────────────────────────────── */
 .nav {
@@ -51,6 +86,7 @@
   font-size: 14px;
   transition: background 0.12s, color 0.12s;
   text-decoration: none;
+  white-space: nowrap;
 }
 
 .navItem:hover {
@@ -65,10 +101,17 @@
   font-weight: 500;
 }
 
+/* Icon-only: zentrieren */
+.navItemCollapsed {
+  justify-content: center;
+  padding: 8px 0;
+}
+
 .navIcon {
   font-size: 16px;
   width: 20px;
   text-align: center;
+  flex-shrink: 0;
 }
 
 .navDivider {
@@ -81,6 +124,13 @@
 .userArea {
   padding: 16px;
   border-top: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.sidebarCollapsed .userArea {
+  padding: 12px 8px;
+  display: flex;
+  justify-content: center;
 }
 
 .userEmail {
@@ -116,9 +166,104 @@
   color: var(--text);
 }
 
+/* Im Icon-only-Modus: zentriert, quadratisch */
+.logoutBtnCollapsed {
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  text-align: center;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ─── Mobile-Header ───────────────────────────────────────────────────────── */
+.mobileHeader {
+  display: none;
+}
+
+/* ─── Backdrop (Mobile) ───────────────────────────────────────────────────── */
+.backdrop {
+  display: none;
+}
+
 /* ─── Haupt-Content ───────────────────────────────────────────────────────── */
 .main {
   flex: 1;
   overflow-y: auto;
   background: var(--bg);
+  min-width: 0;
+}
+
+/* ─── Responsive: Mobile (≤ 768px) ───────────────────────────────────────── */
+@media (max-width: 768px) {
+  /* Sidebar als fixed Overlay */
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    z-index: 200;
+    width: var(--sidebar-width) !important; /* immer volle Breite auf Mobile */
+    transform: translateX(-100%);
+    transition: transform 0.25s ease;
+    box-shadow: var(--shadow-md);
+  }
+
+  .sidebarMobileOpen {
+    transform: translateX(0);
+  }
+
+  /* Toggle-Button im Icon-only-Modus auf Mobile ausblenden */
+  .toggleBtn {
+    display: none;
+  }
+
+  /* Backdrop */
+  .backdrop {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 199;
+    background: rgba(0, 0, 0, 0.4);
+  }
+
+  /* Mobile-Header mit Hamburger */
+  .mobileHeader {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+    background: var(--bg-secondary);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    flex-shrink: 0;
+  }
+
+  .hamburger {
+    background: none;
+    border: none;
+    font-size: 20px;
+    color: var(--text);
+    padding: 4px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    line-height: 1;
+    transition: background 0.12s;
+  }
+  .hamburger:hover { background: var(--bg-tertiary); }
+
+  .mobileTitle {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  /* Main nimmt volle Breite ein (Sidebar ist overlay) */
+  .main {
+    width: 100%;
+  }
 }

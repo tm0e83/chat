@@ -527,6 +527,21 @@ export function setCssVar(name, value) {
 }
 
 /**
+ * Setzt das aktive Theme auf dem Shadow-Host.
+ * Entfernt alle vorhandenen sc-theme-* Klassen und fügt die neue hinzu.
+ * @param {string} themeId - z.B. 'default'
+ */
+export function setTheme(themeId) {
+  if (!shadowRoot) return
+  const host = shadowRoot.host
+  const filtered = host.className
+    .split(' ')
+    .filter(c => !c.startsWith('sc-theme-'))
+  filtered.push(`sc-theme-${themeId}`)
+  host.className = filtered.join(' ').trim()
+}
+
+/**
  * Escaped HTML-Sonderzeichen um XSS zu verhindern.
  * @param {string} str
  * @returns {string}

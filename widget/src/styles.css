@@ -8,26 +8,31 @@
  * - Subtile Schatten nur wo funktional nötig
  */
 
-/* ─── Custom Properties (überschreibbar per Tenant-Branding) ──────────────── */
+/* ─── Custom Properties — Standard-Theme (immer heller Inhaltsbereich) ───── */
 :host {
-  /* Hauptfarbe — wird aus dem Tenant-Branding überschrieben */
-  --sc-primary: #2563eb;
-  --sc-primary-hover: #1d4ed8;
+  /* Trigger-Button — passt sich dem Dark Mode an */
+  --sc-primary: #000000;
+  --sc-primary-hover: #222222;
   --sc-primary-fg: #ffffff;
 
-  /* Hintergründe */
+  /* Aktionsfarbe — Buttons, Links, Focus-Ringe im Inhaltsbereich (immer schwarz) */
+  --sc-action: #000000;
+  --sc-action-hover: #222222;
+  --sc-action-fg: #ffffff;
+
+  /* Hintergründe — immer hell */
   --sc-bg: #ffffff;
-  --sc-bg-secondary: #f8fafc;
-  --sc-bg-user-bubble: var(--sc-primary);
-  --sc-bg-admin-bubble: #f1f5f9;
+  --sc-bg-secondary: #f2f2f2;
+  --sc-bg-user-bubble: #000000;
+  --sc-bg-admin-bubble: #eeeeee;
 
-  /* Text */
-  --sc-text: #0f172a;
-  --sc-text-secondary: #64748b;
-  --sc-text-user-bubble: var(--sc-primary-fg);
-  --sc-text-admin-bubble: #0f172a;
+  /* Text — immer dunkel */
+  --sc-text: #111111;
+  --sc-text-secondary: #777777;
+  --sc-text-user-bubble: #ffffff;
+  --sc-text-admin-bubble: #111111;
 
-  /* Schatten — nur für das Haupt-Chat-Fenster, das über der Seite schwebt */
+  /* Schatten */
   --sc-shadow: 0 8px 32px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(0, 0, 0, 0.08);
   --sc-shadow-bubble: 0 4px 16px rgba(0, 0, 0, 0.16);
 
@@ -42,16 +47,16 @@
   --sc-line-height: 1.5;
 }
 
-/* Automatisches Dunkel-Design */
+/* ─── Dark Mode — nur Trigger-Button passt sich an ───────────────────────── */
+/* Der Chat-Inhaltsbereich bleibt bewusst immer hell. */
 @media (prefers-color-scheme: dark) {
   :host {
-    --sc-bg: #0f172a;
-    --sc-bg-secondary: #1e293b;
-    --sc-bg-admin-bubble: #1e293b;
-    --sc-text: #f1f5f9;
-    --sc-text-secondary: #94a3b8;
-    --sc-text-admin-bubble: #f1f5f9;
-    --sc-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), 0 2px 8px rgba(0, 0, 0, 0.3);
+    --sc-primary: #f0f0f0;
+    --sc-primary-hover: #d4d4d4;
+    --sc-primary-fg: #0a0a0a;
+
+    --sc-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), 0 2px 8px rgba(0, 0, 0, 0.4);
+    --sc-shadow-bubble: 0 4px 16px rgba(0, 0, 0, 0.3);
   }
 }
 
@@ -188,8 +193,8 @@
   align-items: center;
   justify-content: space-between;
   padding: 16px 20px;
-  background: var(--sc-primary);
-  color: var(--sc-primary-fg);
+  background: var(--sc-action);
+  color: var(--sc-action-fg);
   flex-shrink: 0;
 }
 
@@ -216,7 +221,7 @@
   border-radius: var(--sc-radius-sm);
   background: transparent;
   border: none;
-  color: var(--sc-primary-fg);
+  color: var(--sc-action-fg);
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -329,7 +334,7 @@
 
 .sc-textarea:focus {
   background: var(--sc-bg-secondary);
-  box-shadow: inset 0 0 0 1.5px var(--sc-primary);
+  box-shadow: inset 0 0 0 1.5px var(--sc-action);
 }
 
 .sc-send-btn {
@@ -337,8 +342,8 @@
   height: 36px;
   flex-shrink: 0;
   border-radius: var(--sc-radius-sm);
-  background: var(--sc-primary);
-  color: var(--sc-primary-fg);
+  background: var(--sc-action);
+  color: var(--sc-action-fg);
   border: none;
   cursor: pointer;
   display: flex;
@@ -348,7 +353,7 @@
 }
 
 .sc-send-btn:hover:not(:disabled) {
-  background: var(--sc-primary-hover);
+  background: var(--sc-action-hover);
 }
 
 .sc-send-btn:active:not(:disabled) {
@@ -399,7 +404,7 @@
 }
 
 .sc-input:focus {
-  box-shadow: inset 0 0 0 1.5px var(--sc-primary);
+  box-shadow: inset 0 0 0 1.5px var(--sc-action);
 }
 
 .sc-input::placeholder {
@@ -411,8 +416,8 @@
   padding: 10px 16px;
   border-radius: var(--sc-radius-sm);
   border: none;
-  background: var(--sc-primary);
-  color: var(--sc-primary-fg);
+  background: var(--sc-action);
+  color: var(--sc-action-fg);
   font-family: var(--sc-font);
   font-size: var(--sc-font-size);
   font-weight: 500;
@@ -422,7 +427,7 @@
 }
 
 .sc-btn:hover:not(:disabled) {
-  background: var(--sc-primary-hover);
+  background: var(--sc-action-hover);
 }
 
 .sc-btn:disabled {
@@ -488,7 +493,7 @@
 }
 
 .sc-pw-toggle:hover {
-  color: var(--sc-primary);
+  color: var(--sc-action);
 }
 
 /* Toggle zwischen Login und Registrierung */
@@ -501,7 +506,7 @@
 .sc-auth-toggle button {
   background: none;
   border: none;
-  color: var(--sc-primary);
+  color: var(--sc-action);
   cursor: pointer;
   font-size: inherit;
   font-family: inherit;
@@ -536,7 +541,7 @@
 }
 
 .sc-consent-link {
-  color: var(--sc-primary);
+  color: var(--sc-action);
   text-decoration: none;
 }
 
@@ -571,7 +576,7 @@
   width: 20px;
   height: 20px;
   border: 2px solid var(--sc-bg-secondary);
-  border-top-color: var(--sc-primary);
+  border-top-color: var(--sc-action);
   border-radius: 50%;
   animation: sc-spin 0.7s linear infinite;
 }

@@ -66,3 +66,13 @@ export const STORAGE_KEYS = {
   /** Speichert ob der Nutzer dem DSGVO-Consent zugestimmt hat */
   CONSENT_GIVEN: 'sc_consent',
 }
+
+// ─── Widget-Themes ─────────────────────────────────────────────────────────────
+
+/** Liste aller verfügbaren Widget-Themes (je mit id und Anzeigename) */
+export const THEMES = [
+  { id: 'default', name: 'Standard' },
+]
+
+/** ID des Standard-Themes, wird verwendet wenn kein Theme im Branding gesetzt ist */
+export const DEFAULT_THEME = 'default'

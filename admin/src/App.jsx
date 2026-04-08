@@ -19,6 +19,7 @@ import ConversationDetail from '@/pages/ConversationDetail.jsx'
 import Users from '@/pages/Users.jsx'
 import Domains from '@/pages/Domains.jsx'
 import Statistics from '@/pages/Statistics.jsx'
+import Settings from '@/pages/Settings.jsx'
 import Tenants from '@/pages/Tenants.jsx'
 import TenantDetail from '@/pages/TenantDetail.jsx'
 import AcceptInvite from '@/pages/AcceptInvite.jsx'
@@ -39,6 +40,7 @@ export default function App() {
           <Route path="/users" element={<Users />} />
           <Route path="/domains" element={<Domains />} />
           <Route path="/statistics" element={<Statistics />} />
+          <Route path="/settings" element={<Settings />} />
 
           {/* Nur Super-Admin */}
           <Route element={<ProtectedRoute requireSuperAdmin />}>

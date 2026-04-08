@@ -10,7 +10,7 @@
  *
  * Dieses Modul ist der zentrale Einstiegspunkt nach dem Entry-Point (index.js).
  */
-import { STORAGE_KEYS } from '@support-chat/shared'
+import { STORAGE_KEYS, DEFAULT_THEME } from '@support-chat/shared'
 import { onAuthChange, signInWithEmail, signInWithGoogle, logout } from './auth.js'
 import { loadTenant, getOrCreateConversation, sendMessage, subscribeToMessages, isDomainAllowed } from './chat.js'
 import {
@@ -23,7 +23,7 @@ import {
   renderEmptyView,
   createChatWindow,
   setWindowVisible,
-  setCssVar,
+  setTheme,
 } from './ui.js'
 
 /**
@@ -79,10 +79,8 @@ export async function init(config) {
   // ── 3. Shadow DOM erstellen
   const shadowRoot = createShadowRoot(mode, target)
 
-  // Tenant-Branding anwenden (Primärfarbe)
-  if (config.primaryColor || tenant.branding?.primaryColor) {
-    setCssVar('--sc-primary', config.primaryColor || tenant.branding.primaryColor)
-  }
+  // Theme anwenden (aus Tenant-Branding oder Fallback auf Standard-Theme)
+  setTheme(tenant.branding?.theme || DEFAULT_THEME)
 
   // Fenster-Titel und Begrüßungstext
   const title = tenant.branding?.title || 'Support'
